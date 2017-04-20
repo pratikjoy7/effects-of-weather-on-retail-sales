@@ -12,22 +12,25 @@ def main(file):
 			unit_price = row[5]
 			unique_id = row[8]
 
-			date = invoice_date.split()[0]
-			formatted_date = '20%02d-%02d-%02d' % (int(date.split('/')[2]), int(date.split('/')[0]), int(date.split('/')[1]))
-			
-			time = invoice_date.split()[1]
-			formatted_time = '00:00:00'
-
-			parsed_retail_data = [unique_id, invoice_date, description, quantity, unit_price, formatted_date, formatted_time]
-
-			if not os.path.exists('parsed'):
-				os.makedirs('parsed')
-			open('parsed/parsed_retail_data.txt', 'a').close()
-
 			if row[2] == 'Description':
 				continue
-			else:
+			try:
+				date,time = invoice_date.split()
+				date = '20%02d-%02d-%02d' % (int(date.split('/')[2]), int(date.split('/')[0]), int(date.split('/')[1]))
+				
+				time = '%02d:%02d:00' % (int(time.split(':')[0]), int(time.split(':')[1]))
+
+				invoice_date = '%s %s' % (date, time)
+
+				parsed_retail_data = [unique_id, invoice_date, description, quantity, unit_price, date, time]
+
+				if not os.path.exists('parsed'):
+					os.makedirs('parsed')
+				open('parsed/parsed_retail_data.txt', 'a').close()
+
 				write_rows('parsed/parsed_retail_data.txt', parsed_retail_data)
+			except ValueError:
+				continue
 
 def write_rows(filename, data):
 	with open(filename, 'a+') as parsed_file:
