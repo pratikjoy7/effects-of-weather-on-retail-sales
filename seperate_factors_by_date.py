@@ -18,8 +18,8 @@ def main(file):
 			date_time_vs_condition = [date_time, wind_speed]
 			date_time_vs_condition = [date_time, condition]
 
-			if not os.path.exists('../parsed'):
-				os.makedirs('../parsed')
+			if not os.path.exists('parsed'):
+				os.makedirs('parsed')
 			open('parsed/date_time_vs_humidity_' + file_ext + '.txt', 'a').close()
 			open('parsed/date_time_vs_visibility_' + file_ext + '.txt', 'a').close()
 			open('parsed/date_time_vs_wind_speed_' + file_ext + '.txt', 'a').close()
