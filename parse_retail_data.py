@@ -2,12 +2,13 @@ import argparse
 import csv
 import os
 from datetime import datetime
+import re
 
 def main(file):
 	with open(file, 'r+') as raw_file:
 		reader = csv.reader(raw_file)
 		for row in reader:
-			description = row[2]
+			description = re.sub(' +',' ', re.sub(r"[^\w\s]", '', row[2]))
 			quantity = row[3]
 			invoice_date = row[4]
 			unit_price = row[5]
