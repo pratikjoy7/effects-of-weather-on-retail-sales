@@ -52,4 +52,3 @@ TimeGMT,TemperatureC,Dew PointC,Humidity,Sea Level PressurehPa,VisibilityKm,Wind
 11:20 PM,-2.0,-5.0,80,1011,-9999.0,North,7.4,-,N/A,,Clear,350,2010-12-02 23:20:00
 11:50 PM,-2,-5,72,1012,22,North,13.0,,,,Mostly Cloudy,0,2010-12-02 23:50:00
 11:50 PM,-2.0,-5.0,80,1011,-9999.0,North,11.1,-,N/A,,Clear,360,2010-12-02 23:50:00
-s
