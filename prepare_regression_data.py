@@ -3,6 +3,7 @@ import csv
 import os
 import datetime
 import re
+import sys
 
 def main(weather_file, retail_file):
 	with open(weather_file, 'r+') as file:
@@ -18,33 +19,35 @@ def main(weather_file, retail_file):
 				for retail_row in retail_file_reader:
 					unique_id = retail_row[0]
 					invoice_date = retail_row[1]
-					description = retail_row[2]
-					quantity = retail_row[3]
+					product = retail_row[2]
+					quantity = int(retail_row[3])
 					unit_price = retail_row[4]
 					date = retail_row[5]
 					time = retail_row[6]
 					month = '%s-%s' % (date.split('-')[0], date.split('-')[1])
-
-					if retail_row[2] == 'Description':
-						continue
-					try:
-						time_obj = datetime.datetime.strptime(time, '%H:%M:%S')
-
-						if date == weather_date:
-							if time_range_start <= time_obj < time_range_end:
-								regression_retail_data = [unique_id, invoice_date, description, quantity, unit_price, factor]
-
-								if not os.path.exists('regression_dataset'):
-									os.makedirs('regression_dataset')
-								open('regression_dataset/regression_retail_data_' + month + '.txt', 'a').close()
-
-								write_rows('regression_dataset/regression_retail_data_' + month + '.txt', regression_retail_data)
-							else:
+					
+					if product not in (None, ''):
+						if quantity > 0:
+							if retail_row[2] == 'Description':
 								continue
-						else:
-							continue
-					except ValueError:
-						continue
+							try:
+								time_obj = datetime.datetime.strptime(time, '%H:%M:%S')
+
+								if date == weather_date:
+									if time_range_start <= time_obj < time_range_end:
+										regression_retail_data = [unique_id, invoice_date, product, quantity, unit_price, factor]
+
+										if not os.path.exists('regression_dataset'):
+											os.makedirs('regression_dataset')
+										open('regression_dataset/regression_retail_data_' + month + '.txt', 'a').close()
+
+										write_rows('regression_dataset/regression_retail_data_' + month + '.txt', regression_retail_data)
+									else:
+										continue
+								else:
+									continue
+							except ValueError:
+								continue
 
 def write_rows(filename, data):
 	with open(filename, 'a+') as regression_file:
