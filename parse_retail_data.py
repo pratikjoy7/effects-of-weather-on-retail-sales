@@ -21,18 +21,15 @@ def main(file):
 				month = '20%s-%s' % (date.split('/')[2], date.split('/')[0])
 				date = '20%02d-%02d-%02d' % (int(date.split('/')[2]), int(date.split('/')[0]), int(date.split('/')[1]))
 				time = '%02d:%02d:00' % (int(time.split(':')[0]), int(time.split(':')[1]))
-				time_obj = datetime.strptime(time, '%H:%M:%S')
-				std_time = datetime.strptime('12:00:00', '%H:%M:%S')
 				invoice_date = '%s %s' % (date, time)
 
-				if time_obj <= std_time:
-					parsed_retail_data = [unique_id, invoice_date, description, quantity, unit_price, date, time]
+				parsed_retail_data = [unique_id, invoice_date, description, quantity, unit_price, date, time]
 
-					if not os.path.exists('parsed'):
-						os.makedirs('parsed')
-					open('parsed/parsed_retail_data_' + month + '.txt', 'a').close()
+				if not os.path.exists('parsed'):
+					os.makedirs('parsed')
+				open('parsed/parsed_retail_data_' + month + '.txt', 'a').close()
 
-					write_rows('parsed/parsed_retail_data_' + month + '.txt', parsed_retail_data)
+				write_rows('parsed/parsed_retail_data_' + month + '.txt', parsed_retail_data)
 			except ValueError:
 				continue
 
