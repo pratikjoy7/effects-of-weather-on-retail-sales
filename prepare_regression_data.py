@@ -5,16 +5,16 @@ import datetime
 import re
 
 def main(weather_file, retail_file):
-	with open(weather_file, 'r+') as weather_file:
-		weather_file_reader = csv.reader(weather_file)
+	with open(weather_file, 'r+') as file:
+		weather_file_reader = csv.reader(file)
 		for weather_row in weather_file_reader:
 			weather_date = weather_row[0]
 			time_range_start = datetime.datetime.strptime(weather_row[1], '%H:%M:%S')
 			factor = weather_row[2]
 			time_range_end = time_range_start + datetime.timedelta(minutes = 30)
 			
-			with open(retail_file, 'r+') as retail_file:
-				retail_file_reader = csv.reader(retail_file)
+			with open(retail_file, 'r+') as raw_file:
+				retail_file_reader = csv.reader(raw_file)
 				for retail_row in retail_file_reader:
 					unique_id = retail_row[0]
 					invoice_date = retail_row[1]
@@ -23,7 +23,7 @@ def main(weather_file, retail_file):
 					unit_price = retail_row[4]
 					date = retail_row[5]
 					time = retail_row[6]
-					month = '20%s-%s' % (date.split('-')[0], date.split('-')[1])
+					month = '%s-%s' % (date.split('-')[0], date.split('-')[1])
 
 					if retail_row[2] == 'Description':
 						continue
