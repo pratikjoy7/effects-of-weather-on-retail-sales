@@ -6,14 +6,17 @@ import re
 import sys
 
 def main(weather_file, retail_file):
+	file_ext = weather_file.split('_vs_')[1]
 	with open(weather_file, 'r+') as file:
 		weather_file_reader = csv.reader(file)
 		for weather_row in weather_file_reader:
 			weather_date = weather_row[0]
-			time_range_start = datetime.datetime.strptime(weather_row[1], '%H:%M:%S')
-			factor = weather_row[2]
-			time_range_end = time_range_start + datetime.timedelta(minutes = 30)
-			
+			try:
+				time_range_start = datetime.datetime.strptime(weather_row[1], '%H:%M:%S')
+				factor = weather_row[2]
+				time_range_end = time_range_start + datetime.timedelta(minutes = 30)
+			except ValueError:
+				continue
 			with open(retail_file, 'r+') as raw_file:
 				retail_file_reader = csv.reader(raw_file)
 				for retail_row in retail_file_reader:
@@ -24,7 +27,6 @@ def main(weather_file, retail_file):
 					unit_price = retail_row[4]
 					date = retail_row[5]
 					time = retail_row[6]
-					month = '%s-%s' % (date.split('-')[0], date.split('-')[1])
 					
 					if product not in (None, ''):
 						if quantity > 0:
@@ -39,9 +41,9 @@ def main(weather_file, retail_file):
 
 										if not os.path.exists('regression_dataset'):
 											os.makedirs('regression_dataset')
-										open('regression_dataset/regression_retail_data_' + month + '.txt', 'a').close()
+										open('regression_dataset/regression_retail_data_vs_' + file_ext, 'a').close()
 
-										write_rows('regression_dataset/regression_retail_data_' + month + '.txt', regression_retail_data)
+										write_rows('regression_dataset/regression_retail_data_vs_' + file_ext, regression_retail_data)
 									else:
 										continue
 								else:
