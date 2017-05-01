@@ -1,3 +1,4 @@
+week,quantity,temperature,humidity,visibility,wind_speed,condition
 december-2010_1-7,2,-1,86,7,11,0.17
 december-2010_8-14,8,2,84,8,10,0.94
 december-2010_15-21,11,-1,87,7,10,0.66
