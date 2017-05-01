@@ -1,45 +1,97 @@
 import argparse
 import csv
 import os
-from datetime import datetime
+import datetime
 import re
 
-def main(file):
+def main(file, product):
+	header_exists = False
+	product_quantity = [0, 0, 0, 0]
+	current_month = 'december'
+	new_file_name = 'regression-dataset/' + product.replace(' ', '-').lower() + '.csv'
 	with open(file, 'r+') as raw_file:
 		reader = csv.reader(raw_file)
 		for row in reader:
-			description = re.sub(' +',' ', re.sub(r"[^\w\s]", '', row[2]))
-			quantity = row[3]
-			invoice_date = row[4]
-			unit_price = row[5]
-			unique_id = row[8]
-
 			if row[2] == 'Description':
 				continue
-			try:
-				date,time = invoice_date.split()
-				month = '20%s-%s' % (date.split('/')[2], date.split('/')[0])
-				date = '20%02d-%02d-%02d' % (int(date.split('/')[2]), int(date.split('/')[0]), int(date.split('/')[1]))
-				time = '%02d:%02d:00' % (int(time.split(':')[0]), int(time.split(':')[1]))
-				invoice_date = '%s %s' % (date, time)
+			if product == row[2].strip():
+				month,day,year = row[4].split()[0].split('/')
 
-				parsed_retail_data = [unique_id, invoice_date, description, quantity, unit_price, date, time]
+				try:
+					month = datetime.date(int('20' + year), int(month), int(day)).strftime('%B').lower()
+					# Check if directory and file for placing the dataset exists, create if doesn't
+					if not os.path.exists('regression-dataset'):
+						os.makedirs('regression-dataset')
+					open(new_file_name, 'a').close()
+					# Check whether header exists in file, create if doesn't
+					with open(new_file_name, 'r') as file:
+						reader = csv.reader(file)
+						for row in reader:
+							if row[0] == 'week':
+								header_exists = True
+								break
+					if header_exists == False:
+						with open(new_file_name, 'a') as file:	
+							writer = csv.writer(file, dialect='excel')
+							writer.writerow(['week', 'quantity', 'temperature', 'humidity', 'visibility', 'wind_speed', 'condition'])
 
-				if not os.path.exists('parsed'):
-					os.makedirs('parsed')
-				open('parsed/parsed_retail_data_' + month + '.txt', 'a').close()
+					if current_month == month:
+						first_week = '%s-20%s_1-7' % (month, year)
+						second_week = '%s-20%s_8-14' % (month, year)
+						third_week = '%s-20%s_15-21' % (month, year)
+						fourth_week = '%s-20%s_22-28' % (month, year)
+						if 1 <= int(day) <= 7:
+							product_quantity[0] = product_quantity[0] + int(row[3])
+						elif 8 <= int(day) <= 14:
+							product_quantity[1] = product_quantity[1] + int(row[3])
+						elif 15 <= int(day) <= 21:
+							product_quantity[2] = product_quantity[2] + int(row[3])
+						elif 22 <= int(day) <= 28:
+							product_quantity[3] = product_quantity[3] + int(row[3])
+						else:
+							pass
 
-				write_rows('parsed/parsed_retail_data_' + month + '.txt', parsed_retail_data)
-			except ValueError:
-				continue
+					elif current_month != month:
+						with open('weather-data-uk.csv', 'r+') as weather_file:
+							reader = csv.reader(weather_file)
+							for row in reader:
+								if row[0] == first_week:
+									write_rows(new_file_name, [first_week, product_quantity[0], row[1], row[2], row[3], row[4], row[5]])
+								elif row[0] == second_week:
+									write_rows(new_file_name, [second_week, product_quantity[1], row[1], row[2], row[3], row[4], row[5]])
+								elif row[0] == third_week:
+									write_rows(new_file_name, [third_week, product_quantity[2], row[1], row[2], row[3], row[4], row[5]])
+								elif row[0] == fourth_week:
+									write_rows(new_file_name, [fourth_week, product_quantity[3], row[1], row[2], row[3], row[4], row[5]])
+								else:
+									pass
+						product_quantity = [0, 0, 0, 0]
+						current_month = month
+				except ValueError:
+					continue
+		with open('weather-data-uk.csv', 'r+') as weather_file:
+			reader = csv.reader(weather_file)
+			for row in reader:
+				if row[0] == first_week:
+					write_rows(new_file_name, [first_week, product_quantity[0], row[1], row[2], row[3], row[4], row[5]])
+				elif row[0] == second_week:
+					write_rows(new_file_name, [second_week, product_quantity[1], row[1], row[2], row[3], row[4], row[5]])
+				elif row[0] == third_week:
+					write_rows(new_file_name, [third_week, product_quantity[2], row[1], row[2], row[3], row[4], row[5]])
+				elif row[0] == fourth_week:
+					write_rows(new_file_name, [fourth_week, product_quantity[3], row[1], row[2], row[3], row[4], row[5]])
+				else:
+					pass
 
-def write_rows(filename, data):
-	with open(filename, 'a+') as parsed_file:
+
+def write_rows(file, data):
+	with open(file, 'a+') as parsed_file:
 		writer = csv.writer(parsed_file, dialect='excel')
 		writer.writerow(data)
 
+
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='This script is intended to parse a csv file of weather data and extract useful information')
-	parser.add_argument('--file', help='Specify the filename that needs to be parsed')
+	parser.add_argument('--product', help='Specify the product name that needs to be parsed')
 	args = parser.parse_args()
-	main(args.file)
+	main('retail-data-uk.csv', args.product)
