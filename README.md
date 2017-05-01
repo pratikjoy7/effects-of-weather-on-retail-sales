@@ -12,9 +12,10 @@ This repo is dedicated to hosting the dataset and the scirpts necessary to prepa
   * ***Install Python2.7:***
     * Follow instructions: https://www.python.org/downloads/windows/
   * ***Setting up the project:***
-    * Run commands:
-      * ***git clone git@github.com:pratikjoy7/effects-of-weather-on-retail-sales.git***
-      * ***cd effects-of-weather-on-retail-sales/***
+	* Launch **cmd** on windows or **terminal** of unix machinces
+	* Change directory to wherever you want to keep the project
+	* ***git clone git@github.com:pratikjoy7/effects-of-weather-on-retail-sales.git***
+	* ***cd effects-of-weather-on-retail-sales/***
   * ***Rename and store raw weather data:***
     * Put the dataset inside "**weather-dataset**" directory
     * Rename the dataset like the following format:
