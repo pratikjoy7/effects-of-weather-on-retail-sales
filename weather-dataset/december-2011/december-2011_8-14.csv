@@ -1,0 +1,8 @@
+GMT,Max TemperatureC,Mean TemperatureC,Min TemperatureC,Dew PointC,MeanDew PointC,Min DewpointC,Max Humidity, Mean Humidity, Min Humidity, Max Sea Level PressurehPa, Mean Sea Level PressurehPa, Min Sea Level PressurehPa, Max VisibilityKm, Mean VisibilityKm, Min VisibilitykM, Max Wind SpeedKm/h, Mean Wind SpeedKm/h, Max Gust SpeedKm/h,Precipitationmm, CloudCover, Events,WindDirDegrees
+2011-12-8,13,10,8,10,9,6,94,85,77,1015,1006,1000,10,10,10,48,31,69,0.00,5,Rain,221
+2011-12-9,8,6,3,2,1,0,81,70,57,1013,1010,1009,10,10,10,32,23,,0.00,1,,248
+2011-12-10,7,3,0,1,0,-1,93,79,66,1016,1015,1014,,,,19,13,,0.00,,,242
+2011-12-11,8,7,6,8,6,4,100,88,81,1011,1006,999,10,10,9,142,27,,0.00,3,Rain,187
+2011-12-12,9,6,3,7,4,2,93,82,71,1007,1004,994,10,10,10,40,21,61,0.00,3,Rain,213
+2011-12-13,9,7,6,4,2,-1,81,67,50,994,992,988,10,10,10,50,34,55,0.00,1,Rain,232
+2011-12-14,7,6,4,3,2,1,93,78,66,997,995,992,10,10,10,32,21,,0.00,1,Rain,229

@@ -27,8 +27,8 @@ This repo is dedicated to hosting the dataset and the scirpts necessary to prepa
     
 **Commands:**
   * ***Parse weather data for generating regression analysis dataset:***
-    * python parse_weather_data.py --file <***full-path-of-weather-data***>
-      * **Example:** ***python parse_weather_data.py --file weather-dataset/december-2010/december-2010_1-7.csv***
+    * python parse_weather_data.py --dir <***full-path-of-weather-data***>
+      * **Example:** ***python parse_weather_data.py --dir weather-dataset/february-2011/***
   * ***Generate regression dataset from the weather data and the retail data:***
     * python parse_retail_data.py --product <***name-of-the-product-to-generate-regression-data***>
       * **Example:** ***python parse_retail_data.py --product "SET 2 TEA TOWELS I LOVE LONDON"*** 
