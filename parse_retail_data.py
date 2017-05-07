@@ -102,6 +102,8 @@ def main(file, list):
 					else:
 						pass
 
+		header_exists = False
+
 
 def increase_week_count(week_count, file_name, current_file_name):
 	if current_file_name == file_name:
