@@ -1,3 +1,4 @@
+week,quantity,temperature,humidity,visibility,wind_speed,condition
 51,1860,-1,86,7,11,0.17
 0,0,-1,87,7,10,0.66
 1,0,0,83,7,10,0.89
