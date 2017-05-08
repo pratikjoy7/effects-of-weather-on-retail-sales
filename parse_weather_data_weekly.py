@@ -5,6 +5,7 @@ import glob
 
 
 def main(dir):
+	header_exists = False
 	os.chdir(dir)
 	for file in glob.glob("*.csv"): 	
 		week = file.split('.')[0]
@@ -14,6 +15,18 @@ def main(dir):
 		wind_speed = 0
 		condition = 0
 		
+		# Check whether header exists in file, create if doesn't
+		with open('../../weather-data-weekly-uk.csv', 'r') as read_file:
+			reader = csv.reader(read_file)
+			for row in reader:
+				if row[0] == 'date':
+					header_exists = True
+					break
+		if header_exists == False:
+			with open('../../weather-data-weekly-uk.csv', 'a') as write_file:	
+				writer = csv.writer(write_file, dialect='excel')
+				writer.writerow(['week', 'temperature', 'humidity', 'visibility', 'wind_speed', 'condition'])
+
 		with open(file, 'r+') as weather_file:
 			reader = csv.reader(weather_file)
 			for row in reader:
@@ -39,7 +52,7 @@ def main(dir):
 						condition = condition + 1
 				except ValueError:
 					continue
-		write_rows('../../weather-data-uk.csv', [week, temperature/7, humidity/7, visibility/7, wind_speed/7, round(condition/7, 2)])
+		write_rows('../../weather-data-weekly-uk.csv', [week, temperature/7, humidity/7, visibility/7, wind_speed/7, round(condition/7, 2)])
 
 
 def write_rows(file, data):
